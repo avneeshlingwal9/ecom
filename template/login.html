@@ -7,7 +7,7 @@
     <title>Login Page</title>
 </head>
 <body>
-    <form method="post" action="/login">
+    <form method="post" action="/login/">
         {% csrf_token %}
         <label for="username"> Enter your username: </label><br>
         <input type="text" id="username" name="username"><br>
