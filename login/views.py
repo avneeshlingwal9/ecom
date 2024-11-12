@@ -16,9 +16,9 @@ def login_page(request):
         user = authenticate(username=name,password = passwrd)
         if user is not None :
             login(request, user)
-            return redirect('firstpage.html')
+            return redirect('firstpage')
         else:
             return render(request, 'login.html')
     return render(request, 'login.html')
-def first_page(request):
+def firstpage(request):
     return render(request,'firstpage.html')
