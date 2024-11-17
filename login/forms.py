@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .  import models
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(label = "Email" , required=True)
@@ -27,6 +28,10 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+class ProductCreation(forms.ModelForm):
+    class Meta:
+        model = models.Product
+        fields = '__all__'
 
 
 

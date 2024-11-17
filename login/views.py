@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
-from .forms import RegisterForm
+from . import forms
 from django.http import HttpResponse
 from django.contrib import messages
+from . models import Product
+
 
 
 
@@ -24,7 +26,7 @@ def login_page(request):
     return render(request, 'login/home_login.html', {'form': form})
 def register_user(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = forms.RegisterForm(request.POST)
         if form.is_valid():
             messages.success(request,"User created successfully")
             form.save()
@@ -32,7 +34,18 @@ def register_user(request):
         else:
             return render(request,'login/new_registeration.html', {'form' : form})
     else:
-        form = RegisterForm()
+        form = forms.RegisterForm()
     return render(request, 'login/new_registeration.html', {'form': form})
 def orders(request):
     return render(request, 'login/user_profilepage.html')
+def product_insertion(request):
+    if request.method == "POST":
+        product = forms.ProductCreation(request.POST,request.FILES)
+        if product.is_valid():
+            product.save()
+        
+    else:
+        product = forms.ProductCreation()
+
+
+    return render(request, 'login/products.html' , {'form' : product})
