@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Page
+{% endblock title %}
+
+{% block content %}
+<form action="{% url 'login:orders' %}" method = "post" >
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">SUBMIT</button>
+</form>
+
+{% endblock content %}

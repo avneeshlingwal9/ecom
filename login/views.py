@@ -37,7 +37,13 @@ def register_user(request):
         form = forms.RegisterForm()
     return render(request, 'login/new_registeration.html', {'form': form})
 def orders(request):
-    return render(request, 'login/user_profilepage.html')
+    if request.method == "POST":
+        form = forms.OrderCreation(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = forms.OrderCreation()
+    return render(request, 'login/order.html', {'form': form})
 def product_insertion(request):
     if request.method == "POST":
         product = forms.ProductCreation(request.POST,request.FILES)

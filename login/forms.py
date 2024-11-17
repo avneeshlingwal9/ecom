@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .  import models
@@ -32,6 +33,17 @@ class ProductCreation(forms.ModelForm):
     class Meta:
         model = models.Product
         fields = '__all__'
+
+class OrderCreation(forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = '__all__'
+        widgets = {
+            'order_date': forms.DateInput(attrs= {'type': 'date'}),
+            'order_delievered' : forms.DateInput(attrs={'type': 'date'}),
+                
+        }
+        
 
 
 
