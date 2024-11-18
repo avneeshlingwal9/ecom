@@ -7,8 +7,16 @@ Order Page
 {% block content %}
 <form action="{% url 'login:orders' %}" method = "post" >
     {% csrf_token %}
-    {{form}}
-    <button type="submit">SUBMIT</button>
-</form>
+   {{form}}
 
+    <button type="submit">SUBMIT</button>
+
+
+</form>
+<form method="post" action="{% url "login:logOut" %}">
+    {% csrf_token %}
+   
+    <button type="submit" > LOGOUT</button>
+   
+</form>
 {% endblock content %}
