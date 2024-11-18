@@ -4,7 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
 from . import forms
 from django.http import HttpResponse
 from django.contrib import messages
-from . models import Product
+from . models import OrdersUsers
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -15,9 +16,14 @@ def login_page(request):
 
         form = AuthenticationForm(data = request.POST)
         if form.is_valid():
+            
             messages.success(request, "Login successful")
             login(request,form.get_user())
-            return redirect('login:loggedIn')
+            if 'nxt' in request.POST:
+                return redirect(request.POST.get('nxt'))
+
+            else:
+                return redirect('login:orders')
         else:
             return render(request, 'login/home_login.html', {'form': form})
             
@@ -36,10 +42,12 @@ def register_user(request):
     else:
         form = forms.RegisterForm()
     return render(request, 'login/new_registeration.html', {'form': form})
+@login_required(login_url='login:loginPage')
 def orders(request):
     if request.method == "POST":
         form = forms.OrderCreation(request.POST)
         if form.is_valid():
+            print(form)
             form.save()
     else:
         form = forms.OrderCreation()

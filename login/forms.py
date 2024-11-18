@@ -41,6 +41,7 @@ class OrderCreation(forms.ModelForm):
         widgets = {
             'order_date': forms.DateInput(attrs= {'type': 'date'}),
             'order_delievered' : forms.DateInput(attrs={'type': 'date'}),
+            'product_id': forms.CheckboxSelectMultiple(),
                 
         }
         

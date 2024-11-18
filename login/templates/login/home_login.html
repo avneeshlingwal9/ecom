@@ -12,9 +12,12 @@
     {% endfor %}
 </ul>
 {% endif %}
-<form action="{% url 'login:orders' %}" method = "post">
+<form action="{% url 'login:loginPage' %}" method = "post">
     {% csrf_token %}
     {{form}}
+    {% if request.GET.next %}
+    <input type="hidden" name= "nxt" value = "{{request.GET.next}}">
+    {% endif %}
 
 
 <button>LOGIN</button>
