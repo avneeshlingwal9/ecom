@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul>
+    {% for message in messages  %}
+    <li> {{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="{% url 'login:orders' %}" method = "post">
+    {% csrf_token %}
+    {{form}}
+
+
+<button>LOGIN</button>
+</form>
+<p>Not a user
+    <a href=" {% url 'login:registerUser' %} "> Register here</a>
+</p>
+
+{% endblock content %}
+
+

@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import UserApp
+from . models import Product, Order, OrdersUsers
 
 # Register your models here.
-admin.site.register(UserApp)
+admin.site.register(Product)
+admin.site.register(Order) 
+admin.site.register(OrdersUsers) 

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register Here
+{% endblock %}
+
+{% block content %}
+{% comment %} {% if messages %}
+<ul>
+    {% for message in messages %}
+    <li> {{message}}</li>
+    
+    {% endfor %}
+</ul>
+
+{% endif %} {% endcomment %}
+<form action="{% url 'login:registerUser' %}" method = "post">
+    {% csrf_token %}
+    {{form}}
+{% comment %}     {% if  form.errors %}
+    {% for field  in form  %}
+    {% for error in field.errors %}
+    <li> {{error}}</li>
+    {% endfor %}
+    
+    {% endfor %}
+    
+    {% endif %} {% endcomment %}
+
+
+<button>REGISTER</button>
+</form>
+
+
+{% endblock content %}
+
+
