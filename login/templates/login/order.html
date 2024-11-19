@@ -5,6 +5,13 @@ Order Page
 {% endblock title %}
 
 {% block content %}
+{% if messages %}
+<ul>
+    {% for message in messages  %}
+    <li> {{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <form action="{% url 'login:orders' %}" method = "post" >
     {% csrf_token %}
    {{form}}

@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+def homepage(request):
+    return render(request,'login/homepage.html')
 def login_page(request):
     if request.method == "POST":
 

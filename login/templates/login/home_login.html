@@ -5,13 +5,7 @@
 {% endblock %}
 
 {% block content %}
-{% if messages %}
-<ul>
-    {% for message in messages  %}
-    <li> {{message}}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+
 <form action="{% url 'login:loginPage' %}" method = "post">
     {% csrf_token %}
     {{form}}

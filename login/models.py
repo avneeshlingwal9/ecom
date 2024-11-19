@@ -21,8 +21,12 @@ class Order(models.Model):
     order_id = models.CharField(max_length=10, primary_key=True)
     order_date = models.DateField()
     order_delievered = models.DateField()
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, db_column='product_id')
+    product_id = models.ManyToManyField(Product, through='ProductOrders')
 
+class ProductOrders(models.Model):
+    order_id = models.ForeignKey(Order,on_delete=models.CASCADE, null=True, db_column='order_id')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null= True, db_column='product_id')
+    quantity = models.PositiveIntegerField(default = 1)
 class OrdersUsers(models.Model):
     class Meta:
         constraints = [
