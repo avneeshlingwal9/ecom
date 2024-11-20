@@ -28,7 +28,7 @@ class Order(models.Model):
         max_digits = 11
         )
     def __str__(self):
-        return self.order_id
+        return str(self.order_id)
     
 
 class ProductOrders(models.Model):
@@ -39,7 +39,7 @@ class ProductOrders(models.Model):
     quantity = models.PositiveIntegerField(default = 1)
 
     def __str__(self):
-        return self.order_id + self.product_id
+        return str(self.product_id)
     
 class OrdersUsers(models.Model):
     class Meta:
@@ -49,7 +49,7 @@ class OrdersUsers(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE,  db_column='order_id')
     username = models.ForeignKey(User,on_delete=models.CASCADE,  db_column='username') 
     def __str__(self):
-        return self.username + self.order_id
+        return str(self.username)
     
 
 
