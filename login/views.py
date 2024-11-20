@@ -4,7 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
 from . import forms
 from django.http import HttpResponse
 from django.contrib import messages
-from . models import OrdersUsers
+from . import models 
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -45,15 +46,44 @@ def register_user(request):
         form = forms.RegisterForm()
     return render(request, 'login/new_registeration.html', {'form': form})
 @login_required(login_url='login:loginPage')
-def orders(request):
+def orders_page(request):
     if request.method == "POST":
-        form = forms.OrderCreation(request.POST)
-        if form.is_valid():
-            print(form)
-            form.save()
-    else:
-        form = forms.OrderCreation()
-    return render(request, 'login/order.html', {'form': form})
+        check = request.POST.getlist('chk[]')
+        if not check:
+            raise ValueError("please select something")
+        totalPrice = 0 
+        order = models.Order.objects.create()
+        selected_products = models.Product.objects.filter(product_id__in = check)
+        product_map = {str(product.product_id): product for product in selected_products}
+        for product_id in check:
+            quantity = request.POST.get(product_id)
+            if not quantity:
+                raise ValueError("Empty cart")
+            if not quantity.isdigit() or int(quantity) <= 0 :
+                raise ValueError("Empty")
+            curr_product = product_map.get(product_id)
+            totalPrice+= quantity*curr_product.price
+            models.ProductOrders.objects.create(
+                product_id=curr_product,
+                order_id= order,
+                quantity= quantity
+            )
+        
+
+        order.totalPrice = totalPrice
+        order.save()
+        userOrders = models.OrdersUsers.objects.create(order_id= order , username= request.user)
+        
+        messages.success(request, "Order placed successfully")
+        return redirect('login:orders')
+
+
+
+
+    products = models.Product.objects.all()
+    context = {'products':products }
+
+    return render(request,'login/order.html', context)
 def product_insertion(request):
     if request.method == "POST":
         product = forms.ProductCreation(request.POST,request.FILES)
@@ -65,3 +95,14 @@ def product_insertion(request):
 
 
     return render(request, 'login/products.html' , {'form' : product})
+@login_required(login_url='login:loginPage')
+def order_process(request):
+    return redirect('login:ordersProcess')
+
+
+"""   for  product_id in check:
+        quantity = request.POST.get(product_id)
+        currProduct = models.Product.objects.filter(product_id= product_id)
+        totalPrice += currProduct[0].price*float(quantity)
+        productOrders = models.ProductOrders(order_id= order.order_id , product_id= product_id ,quantity= quantity )
+        productOrders.save() """

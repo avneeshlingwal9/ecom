@@ -13,11 +13,27 @@ Order Page
 </ul>
 {% endif %}
 <form action="{% url 'login:orders' %}" method = "post" >
-    {% csrf_token %}
-   {{form}}
+    <ul>
+        {% csrf_token %}
+        {% for product in products  %}
+    
+        <li> 
 
+            <label >
+               
+                <p> Enter product quantity: 
+                    <input type="number" name="{{product.product_id}}" >
+                </p>
+                <input type="checkbox" name="chk[]" value = "{{product.product_id}}">
+            <p>{{product}}</p>
+            <p><img src="{{product.image.url}}" alt=""></p>
+            </label>
+        </li>
+    
+        {% endfor %}
+    </ul>
+  
     <button type="submit">SUBMIT</button>
-
 
 </form>
 <form method="post" action="{% url "login:logOut" %}">
