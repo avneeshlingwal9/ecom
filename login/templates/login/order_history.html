@@ -21,7 +21,7 @@ Order History
 
 {% for group in order_groups %}
 
-<h3> Order id: {{group.0.order_id}}</h3>
+<h3> Order id: {{group.order_id}}</h3>
 <table>
     <tr>
         <th>Product Name</th>
@@ -31,15 +31,17 @@ Order History
         <th>Total Price</th>
 
     </tr>
-    {% for product in group %}
-        <tr>
+    {% for product in group.products_list %}
+        <tr>            
             <td>{{product.product_id.product_name}}</td>
             <td>{{product.product_id.product_type}}</td>
             <td><img src="{{product.product_id.image.url}}" alt=""></td>
             <td>{{product.quantity}}</td>
-            {% if  forloop.first %}
-            <td rowspan = 0> {{product.order_id.totalPrice}}</td>
-            {% endif %}
+    
+            <td>
+                {{group.total_price}}
+            </td>
+            
         </tr>
 
     {% endfor %}

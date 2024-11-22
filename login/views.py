@@ -96,15 +96,23 @@ def order_history(request):
     selected_type = request.POST.get('selected_type')
     order = models.ProductOrders.objects.select_related('product_id', 'order_id').filter(order_id__ordersusers__username = request.user).order_by('order_id')
     order_groups = []
+    
     if selected_type :
         order = order.filter(product_id__product_type=selected_type)
+
     for order_id, group in groupby(order,key = lambda x: x.order_id):
-        order_groups.append(list(group))
+        groups_list = list(group)
+        total = sum(item.product_id.price*item.quantity  for item in groups_list)
+        order_groups.append({
+            'order_id' : order_id,
+            'products_list' : groups_list,
+            'total_price': total}
+        )
     
     
 
 
-    context = {'product_type' : variety , 'order_groups': order_groups,  'selected_type': selected_type}
+    context = {'product_type' : variety , 'order_groups': order_groups,  'selected_type': selected_type }
 
     return render(request, 'login/order_history.html', context)
 
