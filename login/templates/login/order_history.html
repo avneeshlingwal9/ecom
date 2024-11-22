@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+Order History
+{% endblock title %}
+{% block content %}
+<label > Select product type:
+<form action="login:ordersHistory" method = "post">
+    {% csrf_token %}
+<select name="product_type" >
+    <option value="none" disabled selected> Select one</option>
+{% for product in product_type %}
+<option value="{{product}}"> {{product}}</option>
+{% endfor %}
+</select>
+</form>
+
+</label>
+
+<table>
+    <tr>
+        <th> Product name</th>
+        <th> Product type</th>
+        <th> Image </th> 
+    </tr>
+{% for product in  products_list %}
+    <tr>
+        <td>
+            {{product.product_name}}
+        </td>
+        <td>
+            {{product.product_type}}
+        </td>
+      <td> 
+    <img src="{{product.image.url}}" >
+    </td> 
+
+</tr>
+
+
+
+{% endfor %}
+</table>
+
+{% endblock content %}
+
+
+
+

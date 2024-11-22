@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}
 Order Page
@@ -12,27 +12,42 @@ Order Page
     {% endfor %}
 </ul>
 {% endif %}
+<header> 
+    <form action={% url "login:ordersHistory" %} method = "post">
+        {% csrf_token %}
+        <button type="submit">Order History</button>
+    </form>
+</header>
 <form action="{% url 'login:orders' %}" method = "post" >
-    <ul>
+    <table>
+        <tr>
+            <th> Selection</th>
+            <th> Product name</th>
+            <th> Product type</th>
+            <th> Product price</th>
+            <th> Product quantity</th>
+        </tr>
+    
         {% csrf_token %}
         {% for product in products  %}
-    
-        <li> 
-
-            <label >
-               
-                <p> Enter product quantity: 
-                    <input type="number" name="{{product.product_id}}" >
-                </p>
-                <input type="checkbox" name="chk[]" value = "{{product.product_id}}">
-            <p>{{product}}</p>
-            <p><img src="{{product.image.url}}" alt=""></p>
-            </label>
-        </li>
+        <tr>
+        <td>
+            <input type="checkbox" name="chk[]" value = "{{product.product_id}}">
+        </td>
+        <td>{{product}} </td> 
+                
+            <td> {{product.product_type}}</td>
+            <td> {{product.price}}</td>
+            <td><img src="{{product.image.url}}" alt=""></td>
+            
+            <td>Enter product quantity: 
+            <input type="number" name="{{product.product_id}}" ></td>
+        </tr>
     
         {% endfor %}
-    </ul>
-  
+        </table>
+    
+
     <button type="submit">SUBMIT</button>
 
 </form>

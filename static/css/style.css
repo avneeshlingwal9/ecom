@@ -1,0 +1,13 @@
+body {
+    font-style: italic;
+    font-size: large;
+    padding: 30px;
+    text-align: center;
+}
+
+table,
+th,
+td {
+    border: 2px solid black;
+    border-collapse: collapse;
+}

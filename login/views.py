@@ -68,18 +68,11 @@ def orders_page(request):
                 order_id= order,
                 quantity= quantity
             )
-        
-
         order.totalPrice = totalPrice
         order.save()
-        userOrders = models.OrdersUsers.objects.create(order_id= order , username= request.user)
-        
+        userOrders = models.OrdersUsers.objects.create(order_id= order , username= request.user)        
         messages.success(request, "Order placed successfully")
         return redirect('login:orders')
-
-
-
-
     products = models.Product.objects.all()
     context = {'products':products }
 
@@ -96,8 +89,16 @@ def product_insertion(request):
 
     return render(request, 'login/products.html' , {'form' : product})
 @login_required(login_url='login:loginPage')
-def order_process(request):
-    return redirect('login:ordersProcess')
+def order_history(request):
+    product_type = models.Product.objects.values_list('product_type',flat=True).distinct()
+    order = models.OrdersUsers.objects.filter(username= request.user)
+    orders_list = order.values_list('order_id',flat=True)
+    products_list = models.Product.objects.filter(productorders__order_id__in = orders_list)
+    order_quantity = models.Order.objects.filter(order_id__in = orders_list)
+    context = {'product_type' : product_type , 'products_list': products_list ,  'order_quantity': order_quantity}
+
+    return render(request, 'login/order_history.html', context)
+
 
 
 """   for  product_id in check:

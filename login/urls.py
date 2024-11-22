@@ -12,6 +12,6 @@ urlpatterns = [
     path('orders/', views.orders_page, name = 'orders'), 
     path('product/', views.product_insertion, name= 'product'),
     path('logOut/' ,LogoutView.as_view(next_page='login:loginPage'), name= 'logOut' ),
-    path('ordersProcess', views.order_process, name='ordersProcess'),
+    path('ordershistory/', views.order_history, name='ordersHistory'),
 ]
 
