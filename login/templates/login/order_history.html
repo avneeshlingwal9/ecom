@@ -4,14 +4,17 @@ Order History
 {% endblock title %}
 {% block content %}
 <label > Select product type:
-<form action="login:ordersHistory" method = "post">
+<form action= {% url "login:ordersHistory" %}  method ="post">
     {% csrf_token %}
-<select name="product_type" >
-    <option value="none" disabled selected> Select one</option>
+
+    <select name="selected_type" >
+    <option value="" disabled {% if not request.POST.product_type %} selected{% endif %}  selected> Select one</option>
 {% for product in product_type %}
-<option value="{{product}}"> {{product}}</option>
+
+<option value="{{product}}" {% if product == selected_type %} selected{% endif %}> {{product}}</option>
 {% endfor %}
 </select>
+<button type="submit">Filter</button>
 </form>
 
 </label>

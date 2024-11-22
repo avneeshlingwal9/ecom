@@ -90,12 +90,15 @@ def product_insertion(request):
     return render(request, 'login/products.html' , {'form' : product})
 @login_required(login_url='login:loginPage')
 def order_history(request):
-    product_type = models.Product.objects.values_list('product_type',flat=True).distinct()
+    variety = models.Product.objects.values_list('product_type',flat=True).distinct()
+    products_list = models.Product.objects.filter(productorders__order_id__ordersusers__username = request.user)
+    selected_type = request.POST.get('selected_type')
     order = models.OrdersUsers.objects.filter(username= request.user)
-    orders_list = order.values_list('order_id',flat=True)
-    products_list = models.Product.objects.filter(productorders__order_id__in = orders_list)
-    order_quantity = models.Order.objects.filter(order_id__in = orders_list)
-    context = {'product_type' : product_type , 'products_list': products_list ,  'order_quantity': order_quantity}
+
+
+    if selected_type :
+        products_list = products_list.filter(product_type=selected_type)
+    context = {'product_type' : variety , 'products_list': products_list , 'selected_type': selected_type}
 
     return render(request, 'login/order_history.html', context)
 
@@ -107,3 +110,5 @@ def order_history(request):
         totalPrice += currProduct[0].price*float(quantity)
         productOrders = models.ProductOrders(order_id= order.order_id , product_id= product_id ,quantity= quantity )
         productOrders.save() """
+'''  orders_list = order.values_list('order_id',flat=True)
+    products_list = models.Product.objects.filter(productorders__order_id__in = orders_list)'''
