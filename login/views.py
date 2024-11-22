@@ -5,6 +5,8 @@ from . import forms
 from django.http import HttpResponse
 from django.contrib import messages
 from . import models 
+from itertools import groupby
+from operator import itemgetter
 
 from django.contrib.auth.decorators import login_required
 
@@ -91,14 +93,18 @@ def product_insertion(request):
 @login_required(login_url='login:loginPage')
 def order_history(request):
     variety = models.Product.objects.values_list('product_type',flat=True).distinct()
-    products_list = models.Product.objects.filter(productorders__order_id__ordersusers__username = request.user)
     selected_type = request.POST.get('selected_type')
-    order = models.OrdersUsers.objects.filter(username= request.user)
-
-
+    order = models.ProductOrders.objects.select_related('product_id', 'order_id').filter(order_id__ordersusers__username = request.user).order_by('order_id')
+    order_groups = []
     if selected_type :
-        products_list = products_list.filter(product_type=selected_type)
-    context = {'product_type' : variety , 'products_list': products_list , 'selected_type': selected_type}
+        order = order.filter(product_id__product_type=selected_type)
+    for order_id, group in groupby(order,key = lambda x: x.order_id):
+        order_groups.append(list(group))
+    
+    
+
+
+    context = {'product_type' : variety , 'order_groups': order_groups,  'selected_type': selected_type}
 
     return render(request, 'login/order_history.html', context)
 

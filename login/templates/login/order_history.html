@@ -8,10 +8,10 @@ Order History
     {% csrf_token %}
 
     <select name="selected_type" >
-    <option value="" disabled {% if not request.POST.product_type %} selected{% endif %}  selected> Select one</option>
+    <option value=""  selected> None</option>
 {% for product in product_type %}
 
-<option value="{{product}}" {% if product == selected_type %} selected{% endif %}> {{product}}</option>
+<option value={{product}} {% if product == selected_type %} selected{% endif %}> {{product}}</option>
 {% endfor %}
 </select>
 <button type="submit">Filter</button>
@@ -19,30 +19,43 @@ Order History
 
 </label>
 
+{% for group in order_groups %}
+
+<h3> Order id: {{group.0.order_id}}</h3>
 <table>
     <tr>
-        <th> Product name</th>
-        <th> Product type</th>
-        <th> Image </th> 
-    </tr>
-{% for product in  products_list %}
-    <tr>
-        <td>
-            {{product.product_name}}
-        </td>
-        <td>
-            {{product.product_type}}
-        </td>
-      <td> 
-    <img src="{{product.image.url}}" >
-    </td> 
+        <th>Product Name</th>
+        <th>Product Type</th>
+        <th>Image</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
 
-</tr>
+    </tr>
+    {% for product in group %}
+        <tr>
+            <td>{{product.product_id.product_name}}</td>
+            <td>{{product.product_id.product_type}}</td>
+            <td><img src="{{product.product_id.image.url}}" alt=""></td>
+            <td>{{product.quantity}}</td>
+            {% if  forloop.first %}
+            <td rowspan = 0> {{product.order_id.totalPrice}}</td>
+            {% endif %}
+        </tr>
+
+    {% endfor %}
+
+
+</table>
 
 
 
 {% endfor %}
-</table>
+
+
+
+
+
+
 
 {% endblock content %}
 
