@@ -34,7 +34,7 @@ class Order(models.Model):
 class ProductOrders(models.Model):
     order_id = models.ForeignKey(Order,on_delete=models.CASCADE, db_column='order_id')
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null= True, db_column='product_id')
-    product_order = models.DateField(default=date(2024,1,1))
+    product_ordered = models.DateField( auto_now_add=True)
     product_delivered = models.DateField(default=date(2024,1,1))
     quantity = models.PositiveIntegerField(default = 1)
 

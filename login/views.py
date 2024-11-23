@@ -30,6 +30,7 @@ def login_page(request):
             else:
                 return redirect('login:orders')
         else:
+            messages.error(request, "Incorrect username or password")
             return render(request, 'login/home_login.html', {'form': form})
             
     else:

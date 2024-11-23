@@ -5,31 +5,56 @@
 {% endblock %}
 
 {% block content %}
-{% comment %} {% if messages %}
+{% if messages %}
+<div id = "success-messages">
 <ul>
     {% for message in messages %}
     <li> {{message}}</li>
     
     {% endfor %}
 </ul>
-
-{% endif %} {% endcomment %}
-<form action="{% url 'login:registerUser' %}" method = "post">
-    {% csrf_token %}
-    {{form}}
-{% comment %}     {% if  form.errors %}
+</div>
+{% endif %}
+{% if  form.errors %}
+<div id="error-messages">
+<ul>
     {% for field  in form  %}
     {% for error in field.errors %}
-    <li> {{error}}</li>
+    <li> {{error}}<li>
     {% endfor %}
     
     {% endfor %}
+</ul>  
+</div>
+    {% endif %} 
+<form action="{% url 'login:registerUser' %}" method = "post" id ="form-design">
+    {% csrf_token %}
     
-    {% endif %} {% endcomment %}
+    <h3>Registeration </h3>
+
+     <h5>{{form.username.label}}</h5>
+    {{form.username}}
+    <h5>{{form.first_name.label}}</h5>
+    {{form.first_name}}
+    <h5>{{form.last_name.label}}</h5>
+    {{form.last_name}}
+    <h5>{{form.email.label}}</h5>
+    {{form.email}}
+    <h5>{{form.password1.label}}</h5>
+    {{form.password1}}
+    <h5>{{form.password2.label}}</h5>
+    {{form.password2}} 
+
+
+
 
 
 <button>REGISTER</button>
+    <p id="asking"> Already a user 
+    <a href={% url "login:loginPage" %}>Login Here</a>
+</p>
 </form>
+
 
 
 {% endblock content %}

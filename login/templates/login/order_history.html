@@ -28,6 +28,8 @@ Order History
         <th>Product Type</th>
         <th>Image</th>
         <th>Quantity</th>
+        <th>Product Ordered </th>
+        <th>Product  Delievered </th>
         <th>Total Price</th>
 
     </tr>
@@ -37,10 +39,14 @@ Order History
             <td>{{product.product_id.product_type}}</td>
             <td><img src="{{product.product_id.image.url}}" alt=""></td>
             <td>{{product.quantity}}</td>
-    
-            <td>
+            <td> {{product.product_ordered}}</td>
+            <td> {{product.product_delivered}}</td>
+
+            {% if forloop.first %}
+            <td rowspan =0 >
                 {{group.total_price}}
             </td>
+            {% endif %}
             
         </tr>
 
@@ -55,7 +61,12 @@ Order History
 
 
 
-
+<form method="post" action="{% url "login:logOut" %}">
+    {% csrf_token %}
+   
+    <button type="submit" > LOGOUT</button>
+   
+</form>
 
 
 
