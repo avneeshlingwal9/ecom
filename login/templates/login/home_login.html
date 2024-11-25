@@ -15,17 +15,7 @@
 </ul>
 </div>
 {% endif %}
-{% comment %} {% if form.errors %}
-<div id="error-messages">
-<ul>
-    {% for field in form  %}
-        {% for error in field.errors  %}
-            <li> {{error}}</li>
-        {% endfor %}
-    {% endfor %}
-</ul>
-</div>
-{% endif %} {% endcomment %}
+
 
 <form action="{% url 'login:loginPage' %}" method = "post" id="form-design">
     <h3>LOGIN HERE</h3>

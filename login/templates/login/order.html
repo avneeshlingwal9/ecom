@@ -48,33 +48,7 @@ Order Page
         {%endfor%}
             </div>
 
-{% comment %}     <table>
-        <tr>
-            <th> Selection</th>
-            <th> Product name</th>
-            <th> Product type</th>
-            <th> Product price</th>
-            <th> Product Image</th>
-            <th> Product quantity </th> 
-        </tr>
-    
-        {% for product in products  %}
-        <tr>
-        <td>
-            <input type="checkbox" name="chk[]" value = "{{product.product_id}}">
-        </td>
-        <td>{{product}} </td> 
-                
-            <td> {{product.product_type}}</td>
-            <td> {{product.price}}</td>
-            <td><img src="{{product.image.url}}" alt=""></td>
-            
-            <td> 
-            <input type="number" name="{{product.product_id}}" ></td>
-        </tr>
-    
-        {% endfor %}
-        </table> {% endcomment %}
+
     
 
     <button type="submit">Place Order</button>

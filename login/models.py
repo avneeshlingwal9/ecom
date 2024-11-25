@@ -32,6 +32,10 @@ class Order(models.Model):
     
 
 class ProductOrders(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['order_id', 'product_id'], name='unique_product_order')
+        ]
     order_id = models.ForeignKey(Order,on_delete=models.CASCADE, db_column='order_id')
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null= True, db_column='product_id')
     product_ordered = models.DateField( auto_now_add=True)

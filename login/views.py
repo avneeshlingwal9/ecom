@@ -95,6 +95,7 @@ def product_insertion(request):
 def order_history(request):
     variety = models.Product.objects.values_list('product_type',flat=True).distinct()
     selected_type = request.POST.get('selected_type')
+
     order = models.ProductOrders.objects.select_related('product_id', 'order_id').filter(order_id__ordersusers__username = request.user).order_by('order_id')
     order_groups = []
     
@@ -109,7 +110,7 @@ def order_history(request):
             'products_list' : groups_list,
             'total_price': total}
         )
-    
+
     
 
 

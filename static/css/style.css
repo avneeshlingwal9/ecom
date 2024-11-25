@@ -17,6 +17,7 @@ body {
 table,
 th,
 td {
+    margin: 10px;
     border: 2px solid black;
     border-collapse: collapse;
     padding: 10px;
@@ -174,4 +175,16 @@ td {
     #product-checkbox {
         margin-bottom: 10px;
         display: inline;
+}
+#homepage {
+    height: 100px;
+    width: 100px;
+    display: flex;
+    background-color: gray;
+    align-items: center;
+    justify-content: center;
+}
+
+#rocket {
+    font-size: 2rem;
 }

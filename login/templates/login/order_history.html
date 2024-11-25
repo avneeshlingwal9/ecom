@@ -4,7 +4,7 @@ Order History
 {% endblock title %}
 {% block content %}
 <label > Select product type:
-<form action= {% url "login:ordersHistory" %}  method ="post">
+<form action= {% url "login:ordersHistory" %}  method ="post" style= "margin-bottom : 10px">
     {% csrf_token %}
 
     <select name="selected_type" >
@@ -14,6 +14,7 @@ Order History
 <option value={{product}} {% if product == selected_type %} selected{% endif %}> {{product}}</option>
 {% endfor %}
 </select>
+
 <button type="submit">Filter</button>
 </form>
 
@@ -21,8 +22,8 @@ Order History
 
 {% for group in order_groups %}
 
-<h3> Order id: {{group.order_id}}</h3>
-<table>
+<h3 style="margin-bottom: 10px"> Order id: {{group.order_id}}</h3>
+<table style = "margin: 10px">
     <tr>
         <th>Product Name</th>
         <th>Product Type</th>
