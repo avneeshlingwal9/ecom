@@ -53,7 +53,9 @@ def orders_page(request):
     if request.method == "POST":
         check = request.POST.getlist('chk[]')
         if not check:
+            return render(request, 'login/fail.html')
             raise ValueError("please select something")
+            
         totalPrice = 0 
         order = models.Order.objects.create()
         selected_products = models.Product.objects.filter(product_id__in = check)
@@ -61,8 +63,10 @@ def orders_page(request):
         for product_id in check:
             quantity = request.POST.get(product_id)
             if not quantity:
+                return render(request, 'login/fail.html')
                 raise ValueError("Empty cart")
             if not quantity.isdigit() or int(quantity) <= 0 :
+                return render(request, 'login/fail.html')
                 raise ValueError("Empty")
             curr_product = product_map.get(product_id)
             totalPrice+= quantity*curr_product.price

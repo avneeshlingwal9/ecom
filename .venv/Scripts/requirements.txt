@@ -1,0 +1,5 @@
+django
+django-money
+pillow
+django-debug-toolbar
+mysqlclient
