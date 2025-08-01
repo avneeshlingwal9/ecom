@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import *
 import json
+import datetime
 # Create your views here.
 def store(request):
     products = Product.objects.all()
@@ -12,10 +13,14 @@ def store(request):
         customer = request.user.customer
         orders , created = Order.objects.get_or_create(customer = customer , complete = False)
         cartItems = orders.order_quantity
+        items = orders.order_quantity
     else:
+        items = []
 
         orders = {'order_quantity' : 0}
         cartItems = orders['order_quantity']
+
+    
 
     context = {'products': products , 'cart' : cartItems}
     
@@ -33,11 +38,49 @@ def cart(request):
 
     else:
 
+        try: 
+            currCart = json.loads(request.COOKIES['cart'])
+        except:
+            currCart = {}
+        
+        print("Current cart is ", currCart)
         items = []
-        orders = {'order_quantity': 0 , 'order_total': 0}
+        orders = {'order_quantity': 0 , 'order_total': 0 , 'shipping' : False}
         cartItems = orders['order_quantity']
 
-    context  = {'items': items , 'orders' : orders , 'cart': cartItems}
+        for i in currCart:
+
+            
+            cartItems += currCart[i]['quantity']
+
+            product = Product.objects.get(id = i)
+            total = (product.price * float(currCart[i]['quantity']))
+            
+
+
+            orders['order_quantity'] += cartItems
+            orders['order_total'] += total
+
+            item = {
+                'product':{
+                    'id' : product.id,
+                    'name': product.name,
+                    'price':product.price,
+                    'imageURL': product.image
+                },
+                'quantity': currCart[i]['quantity'],
+                'item_total': total,
+            }
+
+            items.append(item)
+
+        
+
+
+	
+
+
+    context  = {'items': items , 'orders' : orders , 'cart': cartItems }
 
 
 
@@ -58,7 +101,7 @@ def checkout(request):
     else:
 
         items = []
-        orders = {'order_quantity' : 0 , 'order_total': 0}
+        orders = {'order_quantity' : 0 , 'order_total': 0 , 'shipping' : False}
         cartItems = orders['order_quantity']
     
     context = {'items': items , 'orders': orders , 'cart' : cartItems}
@@ -69,6 +112,9 @@ def update_items(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
+
+    print('Action ', action)
+    print('Product id ', productId)
     customer = request.user.customer
     product = Product.objects.get(id = productId)
 
@@ -81,7 +127,44 @@ def update_items(request):
     elif action == "remove":
         orderitem.quantity = orderitem.quantity - 1 
 
-    if orderitem.quantity > 0:
-        orderitem.save()
+    orderitem.save()
+
+    if orderitem.quantity <= 0:
+        orderitem.delete()
+    
 
     return JsonResponse('Item was added' , safe=False)
+
+
+def processOrder(request):
+
+    transaction_id = datetime.datetime.now().timestamp()
+
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+         customer = request.user.customer
+         order, created = Order.objects.get_or_create(customer = customer, complete = False)
+         total = float(data['form']['total'])
+         order.transaction_id = transaction_id
+
+    else:
+         print("User is not logged in")
+
+    if total == order.order_total:
+        order.complete = True
+    
+    order.save()
+
+    if order.isShipping:
+        ShippingAddress.objects.create(
+            customer = customer,
+            order = order, 
+            address = data['shipping']['address'],
+            city = data['shipping']['city'],
+            state = data['shipping']['state'],
+            zipcode = data['shipping']['zipcode'],
+        )
+
+
+    
+    return JsonResponse('Payment Submitted ...', safe=False)
