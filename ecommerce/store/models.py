@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
+# Customer model with name, and email and is refering to the django model. 
+
 class Customer(models.Model):
 
     user = models.OneToOneField(User, null = True , blank = True, on_delete=models.CASCADE)
@@ -11,7 +13,10 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+# Product containing name, price, digital and image. 
+# Contains two properties: 
+# imgURL, for the url of the image.     
 
 class Product(models.Model):
 
@@ -32,7 +37,10 @@ class Product(models.Model):
             url = ''
         return url
 
-
+# Order refering to customer, containing fields such as date_ordered_, complete flag and transaction_id. 
+# Property: order_total => Getting the total amount of the order. 
+# Property: order_quantity => Getting the total quantity of the order. 
+# Property: isShipping => If the order contains a product which needs shipping. 
 
 class Order(models.Model):
 
@@ -71,6 +79,9 @@ class Order(models.Model):
         
         return shipping
 
+# OrderItem for a particular item in the order. 
+# References to product, order, quantity, and also date added. 
+# Property: item_total() => Returns the total amount of the orderitem. 
 
 class OrderItem(models.Model):
 
@@ -84,7 +95,9 @@ class OrderItem(models.Model):
 
         return self.product.price * self.quantity
 
-    
+# Shipping Address. 
+# Contains customer, order, address, city, state, zipcode and date_added. 
+
 class ShippingAddress(models.Model):
 
     customer = models.ForeignKey(Customer , on_delete=models.SET_NULL , null = True)

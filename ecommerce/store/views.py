@@ -6,6 +6,8 @@ import json
 import datetime
 from .utils import *
 # Create your views here.
+
+
 def store(request):
     
     data = cartData(request)
@@ -123,3 +125,4 @@ def processOrder(request):
 
     
     return JsonResponse('Payment Submitted ...', safe=False)
+
