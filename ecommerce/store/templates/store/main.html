@@ -95,8 +95,14 @@ function getCookie(name) {
               </li>
               
             </ul>
-            <a href = "{% url "register"%}" class = "btn btn-primary"> Register </a>
+            {% if user.is_authenticated == False %}
+              <a href = "{% url "register"%}" class = "btn btn-primary"> Register </a>
+               
             <a href="{% url "login"%}" class="btn btn-warning"> Login</a>
+            {% else %}
+              <a href= {% url "logout_view" %} class= "btn btn-danger" > Logout </a>
+            {% endif %}
+
 
             <a href="{% url "cart" %}">
                 <img id ="cart-icon" src="{% static "images/image.png" %}">

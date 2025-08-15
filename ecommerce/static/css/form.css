@@ -39,8 +39,8 @@ label{
 }
 .btn{
     padding: 4px;
-    margin-left: 50px;
-    margin-top: 5px;
+    display: block;
+    margin: 0 auto;
     border-radius: 5px;
     background-color: green;
     font-size: 16px;
@@ -56,4 +56,7 @@ input:focus{
 a{
     text-decoration: none;
     color: yellow;
+}
+.extra-message{
+    margin:10px;
 }
