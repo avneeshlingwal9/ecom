@@ -1,0 +1,49 @@
+{% extends "store/baseUser.html" %}
+{% load static %}
+
+{% block title %}
+
+
+    Login Form
+
+{% endblock title %}
+
+
+
+
+{% block content %}
+
+    <form>  
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-fields">   
+            
+                {{field.label_tag}}
+                {{field}}
+            </div>
+
+            
+        
+        {% endfor %}
+
+
+    <button class="btn" type="submit"> 
+
+        Login
+        
+    </button>  
+
+    </form>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+

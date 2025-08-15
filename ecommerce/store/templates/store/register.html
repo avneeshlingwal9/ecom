@@ -1,0 +1,51 @@
+{% extends "store/baseUser.html" %}
+{% load static %}
+
+{% block title %}
+
+
+    Registeration Form
+
+{% endblock title %}
+
+
+
+
+{% block content %}
+
+    <form>  
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-fields">   
+            
+                {{field.label_tag}}
+                {{field}}
+            </div>
+
+            
+        
+        {% endfor %}
+
+
+    <button class="btn" type="submit"> 
+
+        Register
+        
+    </button>  
+
+    </form>
+
+    <p> Already a User. <a href={% url "login" %}> Log in </a></p>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+

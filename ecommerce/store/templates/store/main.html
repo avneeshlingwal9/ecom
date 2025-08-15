@@ -10,6 +10,7 @@
     <script type="text/javascript">
 
         var user = '{{request.user}}'
+
         function getToken(name) {
           let cookieValue = null;
           if (document.cookie && document.cookie !== '') {
@@ -94,7 +95,8 @@ function getCookie(name) {
               </li>
               
             </ul>
-            <a href="#" class="btn btn-warning"> Login</a>
+            <a href = "{% url "register"%}" class = "btn btn-primary"> Register </a>
+            <a href="{% url "login"%}" class="btn btn-warning"> Login</a>
 
             <a href="{% url "cart" %}">
                 <img id ="cart-icon" src="{% static "images/image.png" %}">

@@ -5,6 +5,7 @@ from .models import *
 import json
 import datetime
 from .utils import *
+from .forms import *
 # Create your views here.
 
 
@@ -125,4 +126,20 @@ def processOrder(request):
 
     
     return JsonResponse('Payment Submitted ...', safe=False)
+
+def login(request):
+
+    
+
+    return render(request, 'store/login.html')
+
+
+def register(request):
+
+    form = UserInfoForm()
+
+
+
+
+    return render(request, 'store/register.html' , {'form': form})
 
