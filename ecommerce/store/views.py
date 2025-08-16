@@ -19,7 +19,7 @@ def store(request):
     orders = data['orders']
     items = data['items']
 
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('name')
     
 
     context = {'products': products , 'cart' : cartItems}
@@ -61,6 +61,7 @@ def checkout(request):
     return render(request, 'store/checkout.html' , context)
 
 def update_items(request):
+    
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
