@@ -6,8 +6,11 @@ import json
 import datetime
 from .utils import *
 from .forms import *
+from django.db.models import Q
 
 from django.contrib.auth import login, authenticate, logout
+from django.views.generic import ListView
+
 # Create your views here.
 
 
@@ -20,32 +23,16 @@ def store(request):
     items = data['items']
 
     products = Product.objects.all().order_by('name')
-    
-
-    context = {'products': products , 'cart' : cartItems}
-    
+    context = {'products': products , 'cart' : cartItems}    
     return render(request , 'store/store.html' , context)
 
 def cart(request):
 
     data = cartData(request)
-
     cartItems = data['cart']
     orders = data['orders']
     items = data['items']
-
-
-    
-
-
-
     context  = {'items': items , 'orders' : orders , 'cart': cartItems }
-
-
-
-
-
-
     return render(request, 'store/cart.html', context)
 
 def checkout(request):
@@ -199,4 +186,38 @@ def logout_view(request):
         logout(request)
 
     return redirect('store')
+
+class search_results(ListView):
+
+    model = Product
+    template_name = "store/search.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        data = cartData(self.request)
+
+        cartItems = data['cart']
+        orders = data['orders']
+        items = data['items']
+
+        context['cart'] = cartItems
+
+        return context
+    
+    def get_queryset(self):
+
+        query = self.request.GET.get("q")
+
+        object_list = Product.objects.filter(
+            Q(name__icontains = query)    
+        )
+
+
+        return object_list 
+
+
+
+
+
 

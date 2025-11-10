@@ -1,0 +1,40 @@
+{% extends "store/main.html" %}
+
+{% load static %}
+
+{% block title %}
+
+Search Results
+
+{% endblock %}
+
+{%block content%}
+
+    <div class="row">
+        {% for product  in object_list %}
+        <div class="col-lg-4">
+            
+            <div class="img-container"><img class="thumbnail" src="{{product.imgURL}}" alt=""></div>
+            <div class="box-element product">
+
+                <h6> {{product.name}}
+
+                </h6>
+                <hr>
+                <button data-product = "{{product.id}}"  data-action = "add" class="btn btn-outline-secondary add-btn update-cart">Add to cart
+
+                </button>
+                <a href="" class="btn btn-outline-success"> View
+
+                </a>
+                <h4 style = "display: inline-block;
+                float: right">Price <strong>{{product.price|floatformat:2}}</strong>
+                </h4>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

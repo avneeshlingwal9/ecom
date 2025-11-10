@@ -75,6 +75,8 @@ I faced challenges in how to allow unregistered users to checkout, and i have to
 * Explain in terms of **inputs → steps → output**
 * Mention **time complexity**
 
+  
+
 ---
 
 ### **9. How is your database structured?**
