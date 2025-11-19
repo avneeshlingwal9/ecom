@@ -6,7 +6,6 @@ from .forms import LoginForm
 
 class ModelTests(TestCase):
     def setUp(self):
-        # Create data for testing models
         self.customer_user = User.objects.create_user(username='testuser', password='password')
         self.customer = Customer.objects.create(user=self.customer_user, name='Test Customer', email='test@test.com')
         self.product = Product.objects.create(name='Test Product', price=10.00, digital=False)
@@ -14,35 +13,42 @@ class ModelTests(TestCase):
         self.order_item = OrderItem.objects.create(product=self.product, order=self.order, quantity=2)
 
     def test_product_string_representation(self):
-        """Test that the product name is returned as string"""
+        
         self.assertEqual(str(self.product), 'Test Product')
 
     def test_product_img_url_property(self):
-        """Test the imgURL property handles missing images gracefully"""
-        # Since we didn't upload an image, it should return empty string (based on your logic in models.py)
+        
+        # should return empty string, as no image has been uploaded. 
+
         self.assertEqual(self.product.imgURL, '')
 
     def test_order_total_calculation(self):
-        """Test that order_total property calculates correctly based on order items"""
+      
         # Price 10.00 * Quantity 2 = 20.0
+
         self.assertEqual(self.order.order_total, 20.0)
 
     def test_order_shipping_logic(self):
-        """Test isShipping property returns True for physical products"""
+        
+
         # Product is digital=False, so shipping should be True
         self.assertTrue(self.order.isShipping) 
         
-        # Change product to digital and re-test
+        # Changing product to digital and re-testing
         self.product.digital = True
         self.product.save()
+
         # We need to fetch fresh properties or iterate items again
+
         self.assertFalse(self.order.isShipping)
 
 class ViewTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='viewuser', password='password')
+        
         # Create a product so the store page has content to render
+
         self.product = Product.objects.create(name='View Product', price=5.50)
 
     def test_store_view_status(self):

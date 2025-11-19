@@ -11,6 +11,11 @@ Search Results
 {%block content%}
 
     <div class="row">
+        {% if object_list.count == 0 %}
+
+            <div> No items were found. </div>
+        
+        {% endif %}
         {% for product  in object_list %}
         <div class="col-lg-4">
             

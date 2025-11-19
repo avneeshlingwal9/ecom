@@ -213,6 +213,8 @@ class search_results(ListView):
             Q(name__icontains = query)    
         )
 
+        
+
 
         return object_list 
 
